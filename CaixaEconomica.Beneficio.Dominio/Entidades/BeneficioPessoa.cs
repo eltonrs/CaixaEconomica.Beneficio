@@ -8,7 +8,9 @@ namespace CaixaEconomica.Beneficio.Dominio.Entidades
   public class BeneficioPessoa : Entidade
   {
     public int BeneficioId { get; set; }
+    public virtual Beneficio Beneficio { get; set; } // relacionamento muitos (Pessoa) para muitos (Beneficio)
     public int PessoaId { get; set; }
+    public virtual Pessoa Pessoa { get; set; } // relacionamento muitos (Pessoa) para muitos (Beneficio)
     public DateTime DataInicioBeneficio { get; set; } // do beneficio da pessoa em si
     public DateTime DataTerminoBeneficio { get; set; } // do beneficio da pessoa em si
     public decimal ValorBeneficio { get; set; }
