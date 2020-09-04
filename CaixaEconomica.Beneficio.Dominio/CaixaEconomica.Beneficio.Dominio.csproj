@@ -6,9 +6,7 @@
 
   <ItemGroup>
     <Folder Include="Interfaces\Servicos\" />
-    <Folder Include="Interfaces\Notificacoes\" />
     <Folder Include="Interfaces\Repositorios\" />
-    <Folder Include="Notificacoes\" />
   </ItemGroup>
 
 </Project>

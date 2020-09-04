@@ -37,5 +37,16 @@ namespace CaixaEconomica.Beneficio.Dominio.Entidades
     {
       return Id.GetHashCode(); // não deveria ser somente "return GetHashCode();", ou seja, o hash da classe (this)?
     }
+
+    public bool ValidarPropriedades()
+    {
+      if (string.IsNullOrEmpty(Rua))
+        NotificacaoDominio.AdicionarErro("Rua deve ser preenchida.");
+
+      if (Numero <= 0)
+        NotificacaoDominio.AdicionarErro("Número deve ser preenchido.");
+
+      return NotificacaoDominio.Validar();
+    }
   }
 }

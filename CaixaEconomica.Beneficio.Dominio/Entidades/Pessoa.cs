@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CaixaEconomica.Beneficio.Dominio.Notificacoes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Authentication.ExtendedProtection;
@@ -45,11 +46,31 @@ namespace CaixaEconomica.Beneficio.Dominio.Entidades
      */
     public void AdicionarEndereco(Endereco endereco)
     {
+      /* Melhorando a validação...
       if (endereco != null)
         _enderecos.Add(endereco);
+      */
+
+      if (endereco == null)
+      {
+        // gera uma exceção (não é uma boa prática)... qwdo for uma coisa muito grave, tudo bem
+        // devolver uma mensagem
+        // ou mesclar as duas coisas (exceção e mensagem)
+
+        NotificacaoDominio.AdicionarErro("Endereço deve ser instanciado");
+      }
+      else
+      {
+        endereco.SetNotificacao(new NotificacaoDominio());
+
+        if (endereco.ValidarPropriedades())
+          _enderecos.Add(endereco);
+        else
+          NotificacaoDominio.AdicionarErro("Não é possível adicionar o endereço para pessoa.");
+      }
     }
 
-    // Relacionamento 1 (pessoa) para muitos (BeneficioPessoa)
+    // Relacionamento 1 (pessoa) para muitos (BeneficioPessoa). O EF vai, automaticamente, interpretar o relacionamento entre as tabelas
     private readonly HashSet<BeneficioPessoa> _beneficiosPessoa = new HashSet<BeneficioPessoa>();
     public IEnumerable<BeneficioPessoa> BeneficiosPessoa => _beneficiosPessoa.ToList().AsReadOnly();
 
@@ -57,13 +78,17 @@ namespace CaixaEconomica.Beneficio.Dominio.Entidades
     {
       _beneficiosPessoa.Add(beneficioPessoa);
     }
-
-    /*
+    
     public Pessoa()
     {
       // na forma 1, não precisa da inicialização:
       // Enderecos = new List<Endereco>();
+
+      
+      /* Notifications:
+       * Esquema abaixo é provisório, enqto não se implementa/configura a injeção de dependência:
+       */
+      SetNotificacao(new NotificacaoDominio());
     }
-    */
   }
 }
